@@ -1,0 +1,27 @@
+{
+  "name": "weaveid",
+  "version": "1.0.0",
+  "description": "A decentralized crypto wallet that offers easy onboarding for Arweave dApps",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/instawallet/weaveid-js.git"
+  },
+  "keywords": [
+    "weaveid",
+    "cryptocurrency",
+    "wallet",
+    "arweave",
+    "ethereum",
+    "bitcoin"
+  ],
+  "author": "Seena Zandipour",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/instawallet/weaveid-js/issues"
+  },
+  "homepage": "https://weaveid.io"
+}
