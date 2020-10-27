@@ -199,17 +199,44 @@ function overwriteArweaveMethods() {
 }
 
 function getAddress() {
-  if(iframeChild) return iframeChild.getAddress();
+  if(iframeChild) {
+    return new Promise(function(resolve, reject) {
+      return iframeChild.getAddress().then(function(address) {
+        resolve(address);
+      });
+    });
+  }
   else {
     return new Promise(function(resolve, reject) {
       resolve("0");
     });
   }
 }
-exports.getAddress = getAddress;
-exports.closeModal = closeModal;
-exports.openLoginModal = openLoginModal;
-exports.closeLoginModal = closeModal;
+
+function getWallet() {
+  if(iframeChild) {
+    return new Promise(function(resolve, reject) {
+      return iframeChild.getWallet().then(function(jwk) {
+        resolve(jwk);
+      });
+    });
+  }
+  else {
+    return new Promise(function(resolve, reject) {
+      resolve({});
+    });
+  }
+}
+
+if(exports) {
+  exports.getAddress = getAddress;
+  exports.getWallet = getWallet;
+  exports.openLoginModal = openLoginModal;
+  exports.closeLoginModal = closeModal;
+  exports.closeModal = closeModal;
+}
 window.closeLoginModal = closeModal;
 window.openLoginModal = openLoginModal;
+window.getAddress = getAddress;
+window.getWallet = getWallet;
 window.WeaveID = this;
