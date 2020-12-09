@@ -2,14 +2,14 @@
 // WeaveID JS Module - v1.0
 // https://weaveid.io
 // weaveid.io@gmail.com
-// 11/12/2020
+// 12/08/2020
 /* -------------------------------- */
 
 // VARIABLES:
 var connection;
 var iframeChild;
 var test_jwk;
-var loginUrl = "https://weaveid.io/login.html";
+var loginUrl = "";
 var widgetCSS = `
 #popup {
   display: none;
@@ -139,6 +139,7 @@ function openLoginModal(e) {
 
 // INIT:
 function init() {
+  // TODO: Add ability to pass-i ncustom "arweave" obj
   // Import animate.css for animations:
   loadStyle("https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css");
   // Add style for modal:
@@ -168,7 +169,29 @@ function init() {
   }
 }
 document.addEventListener("DOMContentLoaded", function (event) {
-  init();
+  if(!arweave) console.log("You must create an arweave instance before initializing WeaveID!");
+  else {
+    // ----------------------------------------------
+    // Fetch login URL from WeaveID CommunityXYZ DAO:
+    // ----------------------------------------------
+    // 1. Import CommunityXYZ.js:
+    loadScriptPromise("https://arweave.net/6WvCKxIxCejO505AzeNkuw6NGgE0ySo5lDNN42J2TX0").then(function() {
+      var community = new Community(arweave);
+      // 2. Load the WeaveID DAO:
+      community.setCommunityTx("lIzeO-Yb00iGm0oWK0BCEjxtluUbck1_sH3xeStAgcg").then((response) => {
+        community.getState().then((state) => {
+          // 3. Fetch the WeaveID DAO settings:
+          console.log("STATE = ", state);
+          var settings = {};
+          state.settings.forEach((value, key) => {settings[key] = value});
+          // 4. Set the login URL:
+          loginUrl = settings.loginURL ? settings.loginURL : "https://weaveid.io/login.html";
+          // 5. Initialize WeaveID:
+          init();
+        });
+      });
+    });
+  }
 });
 
 // METHODS:
